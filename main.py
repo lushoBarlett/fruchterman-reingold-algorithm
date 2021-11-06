@@ -1,13 +1,30 @@
 #! /usr/bin/python
 
-from graph import Graph, from_file
+from random import random
+from graph import Graph, Vertex, from_file
 from argparse import ArgumentParser, Namespace
-import matplotlib.pyplot as plt
-import numpy as np
+from geometry import PointSet, initialize_point_set
+from render import render_graph
+
 
 def main(args : Namespace):
     graph : Graph = from_file(args.filename)
-    graph.vertices()
+
+    vertices : set[Vertex] = graph.vertices()
+    edges : list[tuple[Vertex, Vertex]] = graph.edges()
+
+    point_set : PointSet = initialize_point_set(vertices)
+
+    while args.iterations:
+
+        render_graph(point_set, edges)
+
+        # TODO: update point positions
+        for v in vertices:
+            point_set.set_coord(v, (random(), random()))
+
+        args.iterations -= 1
+
 
 if __name__ == "__main__":
     parser : ArgumentParser = ArgumentParser()
