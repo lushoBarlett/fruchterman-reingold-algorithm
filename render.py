@@ -2,9 +2,9 @@ from geometry import PointSet
 from graph import Vertex
 import matplotlib.pyplot as pyplot
 
-from parameters import BOTTOM_BOUND, DELTA_TIME, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
+from parameters import BOTTOM_BOUND, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
 
-def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
+def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex], delta_time : float) -> None:
     pyplot.clf()
     pyplot.xlim(LEFT_BOUND, RIGHT_BOUND)
     pyplot.ylim(BOTTOM_BOUND, TOP_BOUND)
@@ -18,4 +18,4 @@ def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
     pyplot.scatter(point_set.xcoords(), point_set.ycoords())
 
     pyplot.show(block = False)
-    pyplot.pause(DELTA_TIME)
+    pyplot.pause(delta_time)
