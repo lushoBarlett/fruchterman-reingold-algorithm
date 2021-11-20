@@ -6,10 +6,11 @@ import matplotlib.pyplot as pyplot
 def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
     pyplot.clf()
 
+    # ? FIXME: each edge gets painted twice
     for (a, b) in edges:
-        (ax, ay) = point_set.get_coord(a)
-        (bx, by) = point_set.get_coord(b)
-        pyplot.plot([ax, bx], [ay, by], color='brown')
+        va = point_set.get_coord(a)
+        vb = point_set.get_coord(b)
+        pyplot.plot([va.x, vb.x], [va.y, vb.y], color='brown')
 
     pyplot.scatter(point_set.xcoords(), point_set.ycoords())
 

@@ -1,11 +1,10 @@
 #! /usr/bin/python
 
-from random import random
 from graph import Graph, Vertex, from_file
 from argparse import ArgumentParser, Namespace
 from geometry import PointSet, initialize_point_set
 from render import render_graph
-
+from fruchterman_reingold import force
 
 def main(args : Namespace):
     graph : Graph = from_file(args.filename)
@@ -19,11 +18,13 @@ def main(args : Namespace):
 
         render_graph(point_set, edges)
 
-        # TODO: update point positions
         for v in vertices:
-            point_set.set_coord(v, (random(), random()))
+            f = force(v, point_set, edges)
+            print(v, f)
 
         args.iterations -= 1
+    
+    input()
 
 
 if __name__ == "__main__":
