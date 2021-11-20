@@ -27,7 +27,7 @@ def repulsion(pos1 : Vector2D, pos2 : Vector2D, k : float) -> Vector2D:
 def gravity(pos : Vector2D) -> Vector2D:
     middle : Vector2D = Vector2D((RIGHT_BOUND + LEFT_BOUND) / 2, (TOP_BOUND + BOTTOM_BOUND) / 2)
     diff = middle - pos
-    return diff.normalized() * G_FORCE
+    return diff.normalized() * abs(diff)**2 * G_FORCE
 
 
 def force(v : Vertex, point_set : PointSet, edges : list[Edge]) -> Vector2D:
