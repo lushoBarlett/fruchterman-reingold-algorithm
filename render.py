@@ -3,8 +3,10 @@ from graph import Vertex
 import matplotlib.pyplot as pyplot
 
 
-def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
+def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex], delta_time : float) -> None:
     pyplot.clf()
+    pyplot.xlim(0, 1)
+    pyplot.ylim(0, 1)
 
     # ? FIXME: each edge gets painted twice
     for (a, b) in edges:
@@ -15,4 +17,4 @@ def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
     pyplot.scatter(point_set.xcoords(), point_set.ycoords())
 
     pyplot.show(block = False)
-    pyplot.pause(0.001)
+    pyplot.pause(delta_time)

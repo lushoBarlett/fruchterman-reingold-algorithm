@@ -5,6 +5,9 @@ from argparse import ArgumentParser, Namespace
 from geometry import PointSet, initialize_point_set
 from render import render_graph
 from fruchterman_reingold import force
+from vector import Vector2D
+
+delta_time = 0.001
 
 def main(args : Namespace):
     graph : Graph = from_file(args.filename)
@@ -16,12 +19,13 @@ def main(args : Namespace):
 
     while args.iterations:
 
-        render_graph(point_set, edges)
+        render_graph(point_set, edges, delta_time)
 
         for v in vertices:
-            f = force(v, point_set, edges)
-            print(v, f)
+            net_force : Vector2D = force(v, point_set, edges)
+            point_set.apply_force(v, net_force)
 
+        point_set.update(delta_time)
         args.iterations -= 1
     
     input()

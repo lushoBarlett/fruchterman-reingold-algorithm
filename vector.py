@@ -1,7 +1,14 @@
 import math
+from random import random
 
 
 class Vector2D:
+    def zero():
+        return Vector2D(0, 0)
+
+    def random():
+        return Vector2D(random(), random())
+
     def __init__(self, x, y):
         self.x = x
         self.y = y

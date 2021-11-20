@@ -1,4 +1,3 @@
-
 Vertex : type = str
 Edge : type = tuple[Vertex, Vertex]
 AdjacencyList : type = dict[Vertex, set[Vertex]]

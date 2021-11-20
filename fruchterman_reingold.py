@@ -12,7 +12,7 @@ def repulsion(pos1 : Vector2D, pos2 : Vector2D) -> float:
 
 
 def force(v : Vertex, point_set : PointSet, edges : list[Edge]) -> Vector2D:
-    force = Vector2D(0, 0)
+    force = Vector2D.zero()
     vpos = point_set.get_coord(v)
 
     outward = [(a, b) for (a, b) in edges if a == v]
