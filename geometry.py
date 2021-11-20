@@ -4,16 +4,14 @@ from vector import Vector2D
 
 class Transform:
     def zero():
-        return Transform(Vector2D.zero(), Vector2D.zero(), Vector2D.zero())
+        return Transform(Vector2D.zero(), Vector2D.zero())
 
-    def __init__(self, position : Vector2D, velocity : Vector2D, acceleration : Vector2D) -> None:
+    def __init__(self, position : Vector2D, movement : Vector2D) -> None:
         self.position : Vector2D = position
-        self.velocity : Vector2D = velocity
-        self.acceleration : Vector2D = acceleration
+        self.movement : Vector2D = movement
 
     def update(self, delta_time : float) -> None:
-        self.velocity += self.acceleration * delta_time
-        self.position += self.velocity * delta_time
+        self.position += self.movement * delta_time
 
 
 class PointSet:
@@ -39,7 +37,7 @@ class PointSet:
         if label not in self.points:
             raise ValueError(f"Point '{label}' doesn't exist")
 
-        self.points[label].acceleration = force
+        self.points[label].movement = force
 
     def update(self, delta_time : float) -> None:
         for state in self.points.values():
