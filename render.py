@@ -2,11 +2,12 @@ from geometry import PointSet
 from graph import Vertex
 import matplotlib.pyplot as pyplot
 
+from parameters import BOTTOM_BOUND, DELTA_TIME, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
 
-def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex], delta_time : float) -> None:
+def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex]) -> None:
     pyplot.clf()
-    pyplot.xlim(0, 1)
-    pyplot.ylim(0, 1)
+    pyplot.xlim(LEFT_BOUND, RIGHT_BOUND)
+    pyplot.ylim(BOTTOM_BOUND, TOP_BOUND)
 
     # ? FIXME: each edge gets painted twice
     for (a, b) in edges:
@@ -17,4 +18,4 @@ def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex], delta_time
     pyplot.scatter(point_set.xcoords(), point_set.ycoords())
 
     pyplot.show(block = False)
-    pyplot.pause(delta_time)
+    pyplot.pause(DELTA_TIME)

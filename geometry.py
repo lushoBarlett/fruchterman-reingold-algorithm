@@ -1,3 +1,4 @@
+from parameters import BOTTOM_BOUND, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
 from vector import Vector2D
 
 
@@ -60,7 +61,10 @@ class PointSet:
 def initialize_point_set(labels : set) -> PointSet:
     point_set : PointSet = PointSet(labels)
 
+    offset = Vector2D(LEFT_BOUND, BOTTOM_BOUND)
+    scale = max(RIGHT_BOUND - LEFT_BOUND, TOP_BOUND - BOTTOM_BOUND)
+
     for label in labels:
-        point_set.set_coord(label, Vector2D.random())
+        point_set.set_coord(label, (Vector2D.random() + offset) * scale)
 
     return point_set
