@@ -3,7 +3,7 @@
 from graph import Graph, Vertex, from_file
 from argparse import ArgumentParser, Namespace
 from geometry import PointSet, initialize_point_set
-from parameters import DELTA_TIME
+from parameters import DELTA_TIME, TEMPERATURE_DESCENT
 from render import render_graph
 from fruchterman_reingold import force
 from vector import Vector2D
@@ -22,9 +22,10 @@ def main(args : Namespace):
 
         for v in vertices:
             net_force : Vector2D = force(v, point_set, edges)
-            point_set.apply_force(v, net_force)
+            point_set.apply_force(v, net_force * args.temperature)
 
         point_set.update(DELTA_TIME)
+        args.temperature *= TEMPERATURE_DESCENT
         args.iterations -= 1
 
 
