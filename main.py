@@ -22,7 +22,11 @@ def main(args : Namespace):
 
         for v in vertices:
             net_force : Vector2D = force(v, point_set, edges)
-            point_set.apply_force(v, net_force * args.temperature)
+
+            if abs(net_force) > args.temperature:
+                net_force = net_force.normalized() * args.temperature
+
+            point_set.apply_force(v, net_force)
 
         point_set.update(DELTA_TIME)
         args.temperature *= TEMPERATURE_DESCENT
