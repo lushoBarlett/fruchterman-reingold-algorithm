@@ -1,7 +1,7 @@
 from math import sqrt
 from geometry import PointSet
 from graph import Edge, Vertex
-from parameters import BOTTOM_BOUND, G_FORCE, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND, SCATTER_FACTOR
+from parameters import BOTTOM_BOUND, DELTA_DISTANCE, G_FORCE, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND, SCATTER_FACTOR
 from vector import Vector2D
 
 
@@ -17,6 +17,10 @@ def attraction(pos1 : Vector2D, pos2 : Vector2D, k : float) -> Vector2D:
 
 def repulsion(pos1 : Vector2D, pos2 : Vector2D, k : float) -> Vector2D:
     diff = -(pos2 - pos1)
+
+    if abs(diff) < DELTA_DISTANCE:
+        return Vector2D.random()
+
     return diff.normalized() * k**2 / abs(diff)
 
 
