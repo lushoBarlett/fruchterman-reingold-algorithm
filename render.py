@@ -1,8 +1,7 @@
 from geometry import PointSet
 from graph import Vertex
-import matplotlib.pyplot as pyplot
-
 from parameters import BOTTOM_BOUND, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
+import matplotlib.pyplot as pyplot
 
 def render_graph(point_set : PointSet, edges : tuple[Vertex, Vertex], delta_time : float) -> None:
     pyplot.clf()

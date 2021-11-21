@@ -1,16 +1,39 @@
 #! /usr/bin/python
 
-from graph import Graph, Vertex, from_file
+from graph import Edge, Graph, Vertex, from_file
 from argparse import ArgumentParser, Namespace
 from geometry import PointSet, initialize_point_set
 from render import render_graph
-from fruchterman_reingold import force
+from math import sqrt
+from parameters import BOTTOM_BOUND, DELTA_DISTANCE, LEFT_BOUND, RIGHT_BOUND, TOP_BOUND
 from vector import Vector2D
 
-# TODO: inline algorithm in main and implement it by phase
-# in orden to have the verbose option make sense
-# and to be more arquitecturaly accurate
-# as the algorithm is the main concern of our program
+
+def scattering(scatter : float, nodes : int) -> float:
+    layout_area : float = (RIGHT_BOUND - LEFT_BOUND) * (TOP_BOUND - BOTTOM_BOUND)
+    return scatter * sqrt(layout_area / nodes)
+
+
+def attraction(pos1 : Vector2D, pos2 : Vector2D, k : float) -> Vector2D:
+    diff = pos2 - pos1
+    return diff.normalized() * abs(diff)**2 / k
+
+
+def repulsion(pos1 : Vector2D, pos2 : Vector2D, k : float) -> Vector2D:
+    diff = -(pos2 - pos1)
+
+    if abs(diff) < DELTA_DISTANCE:
+        return Vector2D.random()
+
+    return diff.normalized() * k**2 / abs(diff)
+
+
+def gravity(pos : Vector2D, gforce : float) -> Vector2D:
+    middle : Vector2D = Vector2D((RIGHT_BOUND + LEFT_BOUND) / 2, (TOP_BOUND + BOTTOM_BOUND) / 2)
+    diff = middle - pos
+    return diff.normalized() * abs(diff)**2 * gforce
+
+
 def main(args : Namespace):
     graph : Graph = from_file(args.filename)
 
@@ -19,19 +42,36 @@ def main(args : Namespace):
 
     point_set : PointSet = initialize_point_set(vertices)
 
+    k : float = scattering(args.scatter, len(vertices))
+
+    delta_time : float = 1 / args.refresh_rate
+
     while args.iterations:
 
-        render_graph(point_set, edges, 1 / args.refresh_rate)
+        render_graph(point_set, edges, delta_time)
 
         for v in vertices:
-            net_force : Vector2D = force(v, point_set, edges, args.scatter, args.gforce)
+            net_force : Vector2D = Vector2D.zero()
+            vpos = point_set.get_coord(v)
+
+            outward : list[Edge] = [(a, b) for (a, b) in edges if a == v]
+            for (_, w) in outward:
+                wpos = point_set.get_coord(w)
+                net_force += attraction(vpos, wpos, k)
+
+            non_v : list[Vertex] = [x for x in point_set.labels if x != v]
+            for w in non_v:
+                wpos = point_set.get_coord(w)
+                net_force += repulsion(vpos, wpos, k)
+
+            net_force += gravity(vpos, args.gforce)
 
             if abs(net_force) > args.temperature:
                 net_force = net_force.normalized() * args.temperature
 
             point_set.apply_force(v, net_force)
 
-        point_set.update(1 / args.refresh_rate)
+        point_set.update(delta_time)
         args.temperature *= args.damping
         args.iterations -= 1
 

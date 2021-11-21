@@ -1,4 +1,4 @@
-import math
+from math import sqrt
 from random import random
 
 
@@ -38,7 +38,7 @@ class Vector2D:
         return Vector2D(self.x / scalar, self.y / scalar)
 
     def __abs__(self):
-        return math.sqrt(self.x ** 2 + self.y ** 2)
+        return sqrt(self.x ** 2 + self.y ** 2)
 
     def distance(self, other):
         return abs(self - other)
