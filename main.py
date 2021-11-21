@@ -124,19 +124,23 @@ def scattering(scatter : float, nodes : int) -> float:
 
 
 def main(args : Namespace):
+    global active_verbose
+    active_verbose = args.verbose
+
+    if active_verbose:
+        print("Reading graph information from file")
     graph : Graph = from_file(args.filename)
 
     vertices : set[Vertex] = graph.vertices()
     biedges : list[Edge] = graph.biedges()
 
+    if active_verbose:
+        print("Initializing set of points on the plane")
     point_set : PointSet = initialize_point_set(vertices)
 
     k : float = scattering(args.scatter, len(vertices))
 
     delta_time : float = 1 / args.refresh_rate
-
-    global active_verbose
-    active_verbose = args.verbose
 
     while args.iterations:
 
