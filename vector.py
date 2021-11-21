@@ -13,9 +13,6 @@ class Vector2D:
         self.x = x
         self.y = y
 
-    def __str__(self):
-        return f"({self.x}, {self.y})"
-
     def __sub__(self, other):
         return Vector2D(self.x - other.x, self.y - other.y)
 
@@ -28,9 +25,6 @@ class Vector2D:
     def __rmul__(self, scalar):
         return self.__mul__(scalar)
 
-    def __pos__(self):
-        return Vector2D(self.x, self.y)
-
     def __neg__(self):
         return Vector2D(-self.x, -self.y)
 
@@ -39,9 +33,6 @@ class Vector2D:
 
     def __abs__(self):
         return sqrt(self.x ** 2 + self.y ** 2)
-
-    def distance(self, other):
-        return abs(self - other)
 
     def normalized(self):
         return self / abs(self)
