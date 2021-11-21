@@ -26,12 +26,15 @@ class Graph:
     def vertices(self) -> set[Vertex]:
         return set(self.adjacency_list.keys())
 
-    def edges(self) -> list[Edge]:
-        edges : list[Edge] = []
+    def biedges(self) -> list[Edge]:
+        biedges : list[Edge] = []
+        exhausted : set[Vertex] = set()
         for a in self.adjacency_list:
-            for b in self.adjacency_list[a]:
-                edges.append((a, b))
-        return edges
+            if a not in exhausted:
+                exhausted.add(a)
+                for b in self.adjacency_list[a]:
+                    biedges.append((a, b))
+        return biedges
 
 
 def from_file(filename : str) -> Graph:
